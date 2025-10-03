@@ -6,9 +6,11 @@ import { CheckCircle, Clock, Users, BarChart3, Eye, Target, TrendingUp, Play, Ar
 import './App.css'
 import logo from './assets/logo_oryol_final_corrected.png'
 import kirillPortrait from './assets/kirill-portrait.png'
+import LeadForm from './LeadForm'
 
 function App() {
   const [activeTab, setActiveTab] = useState('rop')
+  const [isFormOpen, setIsFormOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-white">
@@ -16,14 +18,14 @@ function App() {
       <header className="premium-header sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-full">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-8">
               <img src={logo} alt="ОРЁЛ" className="premium-logo-large" />
-              <div className="flex flex-col">
+              <div className="flex items-center gap-12">
                 <span className="text-2xl font-bold text-[#1a365d]">ОРЁЛ</span>
-                <span className="text-sm text-gray-600">ИИ для продаж</span>
+                <span className="text-base text-gray-600 hidden lg:inline">Искусственный интеллект для отдела продаж</span>
               </div>
             </div>
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden md:flex space-x-12">
               <a href="#capabilities" className="premium-nav-link">Возможности</a>
               <a href="#creator" className="premium-nav-link">О создателе</a>
             </nav>
@@ -45,7 +47,7 @@ function App() {
               продаж на 100%, не тратя на это личное время.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <button className="cta-primary" onClick={() => alert("Открытие формы демо...")}>
+            <button className="cta-primary" onClick={() => setIsFormOpen(true)}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{display: "inline-block", verticalAlign: "middle", marginRight: "8px"}}>
                 <path d="M6 10L8.5 12.5L14 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
@@ -328,7 +330,7 @@ function App() {
                 </div>
                 <div className="text-center">
                   <div className="stat-number orange text-2xl">8 часов</div>
-                  <span className="stat-label">экономии в неделю</span>
+                  <span className="stat-label">экономии в день</span>
                 </div>
               </div>
             </div>
@@ -344,18 +346,18 @@ function App() {
               Создано практиком для практиков
             </h2>
             <p className="text-xl text-gray-600">
-              20 лет опыта в продажах, от менеджера до коммерческого директора
+              20 лет опыта в продажах, от менеджера до владельца бизнеса
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Кирилл, создатель ОРЁЛ</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Кирилл Соседов, создатель ОРЁЛ</h3>
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
                   "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. 
-                  Я прошел путь от менеджера до коммерческого директора и знаю главную боль — 
-                  невозможность контролировать всё."
+                  Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, 
+                  где теряются ваши деньги."
                 </p>
                 <p>
                   "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. 
@@ -374,7 +376,7 @@ function App() {
                 </div>
               </div>
 
-              <a href="#teletype" className="teletype-link">
+              <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link">
                 Читать статью
               </a>
             </div>
@@ -416,7 +418,7 @@ function App() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Загрузите звонки</h3>
                 <p className="text-gray-600">
-                  Подключите вашу телефонию или просто загрузите аудиофайлы. Это занимает 15 минут.
+                  Подключите вашу CRM-систему или просто загрузите аудиофайлы. Это занимает 15 минут.
                 </p>
               </div>
             </div>
@@ -456,7 +458,7 @@ function App() {
           <h2 className="final-cta-title">Готовы увидеть, где теряются ваши клиенты?</h2>
           <p className="final-cta-subtitle">Получите демо-видео анализа реального звонка + гайд "5 способов увеличить конверсию продаж"</p>
           
-          <button className="final-cta-button" onClick={() => alert("Открытие формы демо...")}>
+          <button className="final-cta-button" onClick={() => setIsFormOpen(true)}>
             Получить демо + 5 способов роста
           </button>
           
@@ -488,6 +490,19 @@ function App() {
                 <li><a href="#contacts" className="text-gray-400 hover:text-white transition-colors">Контакты</a></li>
                 <li><a href="#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
               </ul>
+              <div className="mt-6 space-y-2">
+                <p className="text-sm text-gray-400">Связаться с нами:</p>
+                <p className="text-sm">
+                  <a href="https://t.me/AiConsult3" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">
+                    Telegram: @AiConsult3
+                  </a>
+                </p>
+                <p className="text-sm">
+                  <a href="mailto:k-sosedov@yandex.ru" className="text-gray-300 hover:text-white transition-colors">
+                    Email: k-sosedov@yandex.ru
+                  </a>
+                </p>
+              </div>
             </div>
 
             {/* Колонка 3 - Компания */}
@@ -513,12 +528,15 @@ function App() {
                 </div>
               </div>
               <p className="text-gray-400 text-sm">
-                © 2024 ОРЁЛ. Все права защищены.
+                © 2025 ОРЁЛ. Все права защищены.
               </p>
             </div>
           </div>
         </div>
       </footer>
+      
+      {/* Lead Form Modal */}
+      <LeadForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </div>
   )
 }

@@ -728,3 +728,30 @@ p {
     padding: 24px;
   }
 }
+
+/* Badge alignment fix for function cards */
+.premium-card-large > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.premium-card-large .badge {
+  margin-top: 16px;
+  align-self: flex-start;
+}
+
+/* Reduce white space before footer */
+.final-cta-section {
+  margin-bottom: 0 !important;
+}
+
+footer {
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  footer {
+    margin-top: 24px;
+  }
+}
