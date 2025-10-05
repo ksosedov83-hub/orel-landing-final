@@ -100,37 +100,14 @@ function LeadForm({ isOpen, onClose }) {
       timestamp: new Date().toLocaleString('ru-RU')
     }
     
-    // Send email using Formspree or similar service
-    try {
-      const response = await fetch('https://formspree.io/f/xanyoazo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          _subject: 'Новая заявка с лендинга ОРЁЛ',
-          _replyto: 'k-sosedov@yandex.ru',
-          _template: 'box',
-          name: emailData.name,
-          phone: emailData.phone,
-          contactMethod: emailData.contactMethod,
-          timestamp: emailData.timestamp
-        })
-      })
-      
-      if (response.ok) {
-        // Redirect to thank you page
-        navigate(`/thank-you?name=${encodeURIComponent(formData.name)}&method=${encodeURIComponent(formData.contactMethod)}`)
-        onClose()
-      } else {
-        alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error)
-      alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
-    } finally {
-      setIsSubmitting(false)
-    }
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+
+    // Redirect to thank you page
+    navigate(`/thank-you?name=${encodeURIComponent(formData.name)}&method=${encodeURIComponent(formData.contactMethod)}`)
+    onClose()
+    setIsSubmitting(false)
+
   }
 
   if (!isOpen) return null
