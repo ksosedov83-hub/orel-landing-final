@@ -16,20 +16,18 @@ function App() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="premium-header sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-full">
-            <div className="flex items-center gap-8">
-              <img src={logo} alt="ОРЁЛ" className="premium-logo-large" />
-              <div className="flex items-center gap-12">
-                <span className="text-2xl font-bold text-[#1a365d]">ОРЁЛ</span>
-                <span className="text-base text-gray-600 hidden lg:inline">Искусственный интеллект для отдела продаж</span>
-              </div>
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-full">
+          <div className="flex items-center gap-6">
+            <img src={logo} alt="ОРЁЛ" className="premium-logo-large" />
+            <div className="flex flex-col gap-1">
+              <span className="text-2xl font-bold text-[#1a365d] leading-tight">ОРЁЛ</span>
+              <span className="text-sm text-gray-600 hidden lg:inline leading-tight">Искусственный интеллект для отдела продаж</span>
             </div>
-            <nav className="hidden md:flex space-x-12">
-              <a href="#capabilities" className="premium-nav-link">Возможности</a>
-              <a href="#creator" className="premium-nav-link">О создателе</a>
-            </nav>
           </div>
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#capabilities" className="premium-nav-link">Возможности</a>
+            <a href="#creator" className="premium-nav-link">О создателе</a>
+          </nav>
         </div>
       </header>
 
@@ -46,14 +44,14 @@ function App() {
               Для собственников и руководителей, которые хотят контролировать качество
               продаж на 100%, не тратя на это личное время.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+            <div className="flex flex-col gap-4 justify-center items-center mb-16">
             <button className="cta-primary" onClick={() => setIsFormOpen(true)}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{display: "inline-block", verticalAlign: "middle", marginRight: "8px"}}>
                 <path d="M6 10L8.5 12.5L14 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
               Получить демо + 5 способов роста
             </button>
-            <p className="text-sm text-white mt-4">Видео разбора + практический гайд. Бесплатно.</p>
+            <p className="text-sm text-white mt-2 text-center">Видео разбора + практический гайд. Бесплатно.</p>
           </div>
 
           {/* Statistics */}
@@ -264,36 +262,40 @@ function App() {
             </div>
 
             <div className="premium-card-large">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 bg-orange-100 rounded-lg">
-                  <Target className="h-6 w-6 text-orange-600" />
+              <div className="flex flex-col h-full">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="p-3 bg-orange-100 rounded-lg">
+                    <Target className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      Дает конкретные рекомендации
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      "Менеджеру Иванову нужно поработать над отработкой возражения 'дорого'"
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    Дает конкретные рекомендации
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    "Менеджеру Иванову нужно поработать над отработкой возражения 'дорого'"
-                  </p>
-                  <span className="badge badge-orange">Готовые планы развития</span>
-                </div>
+                <span className="badge badge-orange mt-auto">Готовые планы развития</span>
               </div>
             </div>
 
             <div className="premium-card-large">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Zap className="h-6 w-6 text-green-600" />
+              <div className="flex flex-col h-full">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="p-3 bg-green-100 rounded-lg">
+                    <Zap className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      Экономит вам 10+ часов в неделю
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      Предоставляет готовый отчет по всему отделу за 5 минут в день
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    Экономит вам 10+ часов в неделю
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Предоставляет готовый отчет по всему отделу за 5 минут в день
-                  </p>
-                  <span className="badge badge-green">Автоматические отчеты</span>
-                </div>
+                <span className="badge badge-green mt-auto">Автоматические отчеты</span>
               </div>
             </div>
           </div>
@@ -314,8 +316,7 @@ function App() {
 
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
             <div className="premium-card p-8 border-l-6 border-green-500">
-              <span className="badge badge-green">Реальный кейс</span>
-              
+              <span className="badge badge-green mb-4">Реальный кейс</span>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Продажа музыкальных инструментов</h3>
               <p className="text-gray-600 mb-4">Региональный дистрибьютор, отдел продаж 12 человек</p>
               
@@ -376,7 +377,7 @@ function App() {
                 </div>
               </div>
 
-              <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link">
+              <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link mt-6 inline-block">
                 Читать статью
               </a>
             </div>

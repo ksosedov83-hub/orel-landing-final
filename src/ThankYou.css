@@ -15,10 +15,15 @@
 }
 
 .thank-you-logo {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto 40px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.thank-you-logo:hover {
+  transform: scale(1.05);
 }
 
 .thank-you-title {
@@ -80,8 +85,8 @@
   }
 
   .thank-you-logo {
-    width: 60px;
-    height: 60px;
+    width: 90px;
+    height: 90px;
     margin-bottom: 32px;
   }
 

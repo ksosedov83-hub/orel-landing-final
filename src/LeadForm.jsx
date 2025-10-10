@@ -92,22 +92,35 @@ function LeadForm({ isOpen, onClose }) {
     
     setIsSubmitting(true)
     
-    // Prepare email data
-    const emailData = {
-      name: formData.name,
-      phone: formData.phone,
-      contactMethod: formData.contactMethod,
-      timestamp: new Date().toLocaleString('ru-RU')
+    try {
+      // Send to backend
+      const response = await fetch('https://5000-imzq3kt15p8duny7uywy3-4f349a19.manusvm.computer/api/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          contactMethod: formData.contactMethod
+        })
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        // Redirect to thank you page
+        navigate(`/thank-you?name=${encodeURIComponent(formData.name)}&method=${encodeURIComponent(formData.contactMethod)}`)
+        onClose()
+      } else {
+        alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
+    } finally {
+      setIsSubmitting(false)
     }
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-
-    // Redirect to thank you page
-    navigate(`/thank-you?name=${encodeURIComponent(formData.name)}&method=${encodeURIComponent(formData.contactMethod)}`)
-    onClose()
-    setIsSubmitting(false)
-
   }
 
   if (!isOpen) return null

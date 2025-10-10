@@ -392,35 +392,38 @@ section {
 
 /* ПЕРЕКЛЮЧАТЕЛЬ ВКЛАДОК */
 .tab-switcher {
-  background: #e2e8f0;
-  border-radius: 12px;
-  padding: 6px;
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-radius: 16px;
+  padding: 8px;
   display: inline-flex;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  gap: 4px;
 }
 
 .tab-option {
-  padding: 12px 28px;
-  border-radius: 8px;
+  padding: 14px 32px;
+  border-radius: 12px;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 17px;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
   background: transparent;
-  color: #64748b;
+  color: #94a3b8;
+  position: relative;
 }
 
 .tab-option.active {
   background: #ffffff;
   color: #1e293b;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  font-weight: 600;
-  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  transform: translateY(-2px);
 }
 
 .tab-option:not(.active):hover {
-  color: #475569;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 /* КАРТОЧКИ ПРОБЛЕМ */
@@ -653,12 +656,16 @@ section {
 }
 
 .badge {
-  display: inline-block;
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   margin-top: 16px;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .badge-green {
@@ -737,7 +744,8 @@ p {
 }
 
 .premium-card-large .badge {
-  margin-top: 16px;
+  margin-top: auto;
+  padding-top: 16px;
   align-self: flex-start;
 }
 
@@ -754,4 +762,13 @@ footer {
   footer {
     margin-top: 24px;
   }
+}
+
+/* Special styling for "Реальный кейс" badge */
+.premium-card .badge-green {
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1;
 }
