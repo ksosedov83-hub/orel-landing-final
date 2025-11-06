@@ -199,3 +199,85 @@
     font-size: 16px;
   }
 }
+
+
+
+/* Consent Checkbox Styles */
+.consent-group {
+  margin: 16px 0 24px 0;
+}
+
+.consent-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.consent-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-top: 2px;
+}
+
+.consent-checkbox:hover .checkmark {
+  border-color: #ea580c;
+}
+
+.consent-checkbox input:checked ~ .checkmark {
+  background-color: #ea580c;
+  border-color: #ea580c;
+}
+
+.consent-checkbox input:checked ~ .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.consent-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.privacy-link {
+  color: #ea580c;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.privacy-link:hover {
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .consent-text {
+    font-size: 12px;
+  }
+  
+  .checkmark {
+    width: 18px;
+    height: 18px;
+  }
+}
+

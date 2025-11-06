@@ -5,8 +5,9 @@ import { Button } from './components/ui/button'
 import { CheckCircle, Clock, Users, BarChart3, Eye, Target, TrendingUp, Play, ArrowUp, Timer, Check, Zap, Shield, Award } from 'lucide-react'
 import './App.css'
 import logo from './assets/logo_oryol_final_corrected.png'
-import kirillPortrait from './assets/kirill-portrait.png'
+import kirillPortrait from './assets/kirill-portrait-new.jpg'
 import LeadForm from './LeadForm'
+import CookieBanner from './CookieBanner'
 
 function App() {
   const [activeTab, setActiveTab] = useState('rop')
@@ -17,11 +18,12 @@ function App() {
       {/* Header */}
       <header className="premium-header sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-full">
-          <div className="flex items-center gap-6">
+          <div className="logo-container flex items-center gap-6">
             <img src={logo} alt="ОРЁЛ" className="premium-logo-large" />
             <div className="flex flex-col gap-1">
               <span className="text-2xl font-bold text-[#1a365d] leading-tight">ОРЁЛ</span>
               <span className="text-sm text-gray-600 hidden lg:inline leading-tight">Искусственный интеллект для отдела продаж</span>
+              <span className="logo-tagline hidden">ИИ для отдела продаж</span>
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-8">
@@ -228,15 +230,15 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="premium-card-large">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 bg-red-100 rounded-lg">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-red-100 rounded-lg flex-shrink-0">
                   <Eye className="h-6 w-6 text-red-600" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     Находит ошибки в диалогах
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed mb-4">
                     Автоматически определяет пропущенные этапы продажи, нарушения скрипта и неудачные формулировки
                   </p>
                   <span className="badge badge-green">Анализ 100% звонков</span>
@@ -245,15 +247,15 @@ function App() {
             </div>
 
             <div className="premium-card-large">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 bg-blue-100 rounded-lg">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-100 rounded-lg flex-shrink-0">
                   <BarChart3 className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     Оценивает эффективность объективно
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed mb-4">
                     Строит рейтинг менеджеров на основе десятков параметров, а не ваших ощущений
                   </p>
                   <span className="badge badge-blue">Объективные метрики</span>
@@ -262,40 +264,40 @@ function App() {
             </div>
 
             <div className="premium-card-large">
-              <div className="flex flex-col h-full">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="p-3 bg-orange-100 rounded-lg">
-                    <Target className="h-6 w-6 text-orange-600" />
-                  </div>
+              <div className="flex items-start gap-4 h-full">
+                <div className="p-3 bg-orange-100 rounded-lg flex-shrink-0">
+                  <Target className="h-6 w-6 text-orange-600" />
+                </div>
+                <div className="flex flex-col justify-between flex-1">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       Дает конкретные рекомендации
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-gray-600 leading-relaxed mb-4">
                       "Менеджеру Иванову нужно поработать над отработкой возражения 'дорого'"
                     </p>
                   </div>
+                  <span className="badge badge-orange">Готовые планы развития</span>
                 </div>
-                <span className="badge badge-orange mt-auto">Готовые планы развития</span>
               </div>
             </div>
 
             <div className="premium-card-large">
-              <div className="flex flex-col h-full">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="p-3 bg-green-100 rounded-lg">
-                    <Zap className="h-6 w-6 text-green-600" />
-                  </div>
+              <div className="flex items-start gap-4 h-full">
+                <div className="p-3 bg-green-100 rounded-lg flex-shrink-0">
+                  <Zap className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="flex flex-col justify-between flex-1">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       Экономит вам 10+ часов в неделю
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-gray-600 leading-relaxed mb-4">
                       Предоставляет готовый отчет по всему отделу за 5 минут в день
                     </p>
                   </div>
+                  <span className="badge badge-green">Автоматические отчеты</span>
                 </div>
-                <span className="badge badge-green mt-auto">Автоматические отчеты</span>
               </div>
             </div>
           </div>
@@ -342,57 +344,115 @@ function App() {
       {/* Creator Section */}
       <section id="creator" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="section-title mb-4">
-              Создано практиком для практиков
-            </h2>
-            <p className="text-xl text-gray-600">
-              20 лет опыта в продажах, от менеджера до владельца бизнеса
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Кирилл Соседов, создатель ОРЁЛ</h3>
-              <div className="space-y-4 text-gray-700 leading-relaxed">
-                <p>
-                  "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. 
-                  Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, 
-                  где теряются ваши деньги."
-                </p>
-                <p>
-                  "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. 
-                  Он говорит не на языке технологий, а на языке цифр и прибыли."
-                </p>
-              </div>
-              
-              <div className="flex items-center gap-8 mt-8">
-                <div className="text-center">
-                  <div className="stat-number blue text-2xl">20+</div>
-                  <div className="stat-label">лет в продажах</div>
-                </div>
-                <div className="text-center">
-                  <div className="stat-number blue text-2xl">500+</div>
-                  <div className="stat-label">обученных менеджеров</div>
-                </div>
-              </div>
-
-              <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link mt-6 inline-block">
-                Читать статью
-              </a>
+          {/* Mobile: Text first, then photo */}
+          <div className="lg:hidden">
+            <div className="text-center mb-8">
+              <h2 className="section-title mb-2">
+                Создано практиком для практиков
+              </h2>
+              <p className="text-base text-gray-600 mb-6">
+                20 лет опыта в продажах, от менеджера до владельца бизнеса
+              </p>
             </div>
             
-            <div className="text-center">
+            {/* Photo for mobile */}
+            <div className="text-center mb-8">
               <div className="relative inline-block">
                 <img 
                   src={kirillPortrait} 
                   alt="Кирилл, создатель ОРЁЛ" 
-                  className="w-80 h-80 object-cover rounded-2xl shadow-2xl"
+                  className="founder-photo w-56 h-56 object-cover rounded-2xl shadow-2xl"
                   style={{
                     border: '4px solid transparent',
                     background: 'linear-gradient(135deg, #3b82f6, #ff6b35) padding-box, linear-gradient(135deg, #3b82f6, #ff6b35) border-box'
                   }}
                 />
+              </div>
+            </div>
+            
+            {/* Content for mobile */}
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Кирилл Соседов, создатель ОРЁЛ</h3>
+              <div className="space-y-3 text-gray-700 leading-relaxed text-sm mb-6">
+                <p>
+                  "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, где теряются ваши деньги."
+                </p>
+                <p>
+                  "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. Он говорит не на языке технологий, а на языке цифр и прибыли."
+                </p>
+              </div>
+              
+              <div className="flex justify-center gap-6 mb-6">
+                <div className="text-center">
+                  <div className="stat-number blue text-xl">20+</div>
+                  <div className="stat-label text-xs">лет в продажах</div>
+                </div>
+                <div className="text-center">
+                  <div className="stat-number blue text-xl">500+</div>
+                  <div className="stat-label text-xs">обученных менеджеров</div>
+                </div>
+              </div>
+
+              <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link inline-block">
+                Читать статью
+              </a>
+            </div>
+          </div>
+          
+          {/* Desktop: Original layout */}
+          <div className="hidden lg:block">
+            <div className="text-center mb-16">
+              <h2 className="section-title mb-4">
+                Создано практиком для практиков
+              </h2>
+              <p className="text-xl text-gray-600">
+                20 лет опыта в продажах, от менеджера до владельца бизнеса
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="text-center lg:text-left">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Кирилл Соседов, создатель ОРЁЛ</h3>
+                <div className="space-y-4 text-gray-700 leading-relaxed">
+                  <p>
+                    "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. 
+                    Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, 
+                    где теряются ваши деньги."
+                  </p>
+                  <p>
+                    "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. 
+                    Он говорит не на языке технологий, а на языке цифр и прибыли."
+                  </p>
+                </div>
+                
+                <div className="flex items-center gap-8 mt-8">
+                  <div className="text-center">
+                    <div className="stat-number blue text-2xl">20+</div>
+                    <div className="stat-label">лет в продажах</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="stat-number blue text-2xl">500+</div>
+                    <div className="stat-label">обученных менеджеров</div>
+                  </div>
+                </div>
+
+                <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link mt-6 inline-block">
+                  Читать статью
+                </a>
+              </div>
+              
+              <div className="text-center">
+                <div className="relative inline-block">
+                  <img 
+                    src={kirillPortrait} 
+                    alt="Кирилл, создатель ОРЁЛ" 
+                    className="founder-photo w-80 h-80 object-cover rounded-2xl shadow-2xl"
+                    style={{
+                      border: '4px solid transparent',
+                      background: 'linear-gradient(135deg, #3b82f6, #ff6b35) padding-box, linear-gradient(135deg, #3b82f6, #ff6b35) border-box'
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -404,11 +464,8 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="section-title mb-4">
-              Начните увеличивать конверсию уже завтра
+              Начните увеличивать конверсию за 3 шага
             </h2>
-            <p className="text-xl text-gray-600">
-              От проблемы к росту продаж за 3 простых шага
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -468,73 +525,66 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Колонка 1 - Продукт */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-white">Продукт</h3>
-              <ul className="space-y-3">
-                <li><a href="#capabilities" className="text-gray-400 hover:text-white transition-colors">Возможности</a></li>
-                <li><a href="#pricing" className="text-gray-400 hover:text-white transition-colors">Тарифы</a></li>
-                <li><a href="#integrations" className="text-gray-400 hover:text-white transition-colors">Интеграции</a></li>
-                <li><a href="#demo" className="text-gray-400 hover:text-white transition-colors">Демо-версия</a></li>
-              </ul>
+      <footer className="footer">
+        <div className="footer-container">
+          {/* Footer Content */}
+          <div className="footer-content">
+            {/* Logo & About */}
+            <div className="footer-logo-section">
+              <img src={logo} alt="ОРЁЛ" className="footer-logo" />
+              <div className="footer-logo-text">ОРЁЛ</div>
+              <p className="footer-tagline">
+                ИИ-ассистент для анализа звонков отдела продаж
+              </p>
             </div>
-
-            {/* Колонка 2 - Поддержка */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-white">Поддержка</h3>
-              <ul className="space-y-3">
-                <li><a href="#docs" className="text-gray-400 hover:text-white transition-colors">Документация</a></li>
-                <li><a href="#help" className="text-gray-400 hover:text-white transition-colors">Помощь</a></li>
-                <li><a href="#contacts" className="text-gray-400 hover:text-white transition-colors">Контакты</a></li>
-                <li><a href="#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
-              </ul>
-              <div className="mt-6 space-y-2">
-                <p className="text-sm text-gray-400">Связаться с нами:</p>
-                <p className="text-sm">
-                  <a href="https://t.me/AiConsult3" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">
-                    Telegram: @AiConsult3
-                  </a>
-                </p>
-                <p className="text-sm">
-                  <a href="mailto:k-sosedov@yandex.ru" className="text-gray-300 hover:text-white transition-colors">
-                    Email: k-sosedov@yandex.ru
-                  </a>
-                </p>
+            
+            {/* Product Column */}
+            <div className="footer-column">
+              <h4>Продукт</h4>
+              <div className="footer-links">
+                <a href="#capabilities">Возможности</a>
+                <a href="#cases">Кейсы</a>
+                <a href="#demo">Демо</a>
               </div>
             </div>
-
-            {/* Колонка 3 - Компания */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-white">Компания</h3>
-              <ul className="space-y-3">
-                <li><a href="#creator" className="text-gray-400 hover:text-white transition-colors">О создателе</a></li>
-                <li><a href="#teletype" className="text-gray-400 hover:text-white transition-colors">История в Teletype</a></li>
-                <li><a href="#blog" className="text-gray-400 hover:text-white transition-colors">Блог</a></li>
-                <li><a href="#career" className="text-gray-400 hover:text-white transition-colors">Карьера</a></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Низ footer */}
-          <div className="border-t border-gray-800 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="flex items-center gap-4 mb-4 md:mb-0">
-                <img src={logo} alt="ОРЁЛ" className="h-12 w-auto" />
-                <div className="flex flex-col">
-                  <span className="text-white font-semibold text-lg">ОРЁЛ</span>
-                  <span className="text-gray-400 text-sm">ИИ-ассистент для анализа звонков отдела продаж</span>
+            
+            {/* Company Column */}
+            <div className="footer-column">
+              <h4>Компания</h4>
+              <div className="footer-links">
+                <a href="#creator">О создателе</a>
+                <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener">Блог</a>
+              </div>
+              
+              <h4 style={{marginTop: '24px'}}>Связаться</h4>
+              <div className="footer-contact">
+                <div className="footer-contact-item">
+                  <span className="contact-icon">✈️</span>
+                  <a href="https://t.me/AiConsult3" target="_blank" rel="noopener">@AiConsult3</a>
+                </div>
+                <div className="footer-contact-item">
+                  <span className="contact-icon">📧</span>
+                  <a href="mailto:k-sosedov@yandex.ru">k-sosedov@yandex.ru</a>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm">
-                © 2025 ОРЁЛ. Все права защищены.
-              </p>
+            </div>
+          </div>
+          
+          {/* Footer Bottom */}
+          <div className="footer-bottom">
+            <div className="footer-copyright">
+              © 2025 ОРЁЛ. Все права защищены.
+            </div>
+            
+            <div className="footer-legal">
+              <a href="/privacy-policy.html">Политика конфиденциальности</a>
             </div>
           </div>
         </div>
       </footer>
+      
+      {/* Cookie Banner */}
+      <CookieBanner />
       
       {/* Lead Form Modal */}
       <LeadForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />

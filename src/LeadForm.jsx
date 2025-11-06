@@ -8,7 +8,8 @@ function LeadForm({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    contactMethod: 'Telegram'
+    contactMethod: 'Telegram',
+    consent: false
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -85,6 +86,10 @@ function LeadForm({ isOpen, onClose }) {
       newErrors.phone = phoneError
     }
     
+    if (!formData.consent) {
+      newErrors.consent = 'Пожалуйста, согласитесь на обработку персональных данных'
+    }
+    
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
@@ -94,7 +99,7 @@ function LeadForm({ isOpen, onClose }) {
     
     try {
       // Send to backend
-      const response = await fetch('https://5000-imzq3kt15p8duny7uywy3-4f349a19.manusvm.computer/api/submit-form', {
+      const response = await fetch('/api/submit-form', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -102,7 +107,8 @@ function LeadForm({ isOpen, onClose }) {
         body: JSON.stringify({
           name: formData.name,
           phone: formData.phone,
-          contactMethod: formData.contactMethod
+          contactMethod: formData.contactMethod,
+          consent: formData.consent
         })
       })
 
@@ -183,6 +189,27 @@ function LeadForm({ isOpen, onClose }) {
               <option value="WhatsApp">WhatsApp</option>
               <option value="Звонок">Звонок</option>
             </select>
+          </div>
+          
+          <div className="form-group consent-group">
+            <label className="consent-checkbox">
+              <input
+                type="checkbox"
+                name="consent"
+                id="consent"
+                checked={formData.consent}
+                onChange={(e) => {
+                  setFormData({ ...formData, consent: e.target.checked })
+                  if (errors.consent) setErrors({ ...errors, consent: null })
+                }}
+                required
+              />
+              <span className="checkmark"></span>
+              <span className="consent-text">
+                Я согласен на обработку персональных данных
+              </span>
+            </label>
+            {errors.consent && <span className="error-message">{errors.consent}</span>}
           </div>
           
           <button 
