@@ -9,10 +9,10 @@ function CookieBanner() {
     const cookieConsent = localStorage.getItem('cookieConsent')
     
     if (!cookieConsent) {
-      // Show banner after 1 second
+      // Show banner after 3 seconds
       const timer = setTimeout(() => {
         setIsVisible(true)
-      }, 1000)
+      }, 3000)
       
       return () => clearTimeout(timer)
     }

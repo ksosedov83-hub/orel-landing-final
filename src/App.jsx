@@ -544,7 +544,7 @@ function App() {
               <div className="footer-links">
                 <a href="#capabilities">Возможности</a>
                 <a href="#cases">Кейсы</a>
-                <a href="#demo">Демо</a>
+                <a href="#demo" onClick={(e) => { e.preventDefault(); setIsFormOpen(true); }}>Демо</a>
               </div>
             </div>
             
