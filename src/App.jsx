@@ -8,6 +8,7 @@ import logo from './assets/logo_oryol_final_corrected.png'
 import kirillPortrait from './assets/kirill-portrait-new.jpg'
 import LeadForm from './LeadForm'
 import CookieBanner from './CookieBanner'
+import AnimatedNumber from './AnimatedNumber'
 
 function App() {
   const [activeTab, setActiveTab] = useState('rop')
@@ -63,7 +64,7 @@ function App() {
                 <div className="p-2 rounded-full stat-icon-green">
                   <ArrowUp className="h-6 w-6 text-white" />
                 </div>
-                +28%
+                +<AnimatedNumber value="28" suffix="%" />
               </div>
               <div className="stat-label">к прибыли за 2 месяца</div>
             </div>
@@ -72,7 +73,7 @@ function App() {
                 <div className="p-2 rounded-full stat-icon-orange">
                   <Timer className="h-6 w-6 text-white" />
                 </div>
-                8 часов
+                <AnimatedNumber value="8" suffix=" часов" />
               </div>
               <div className="stat-label">экономии в неделю</div>
             </div>
@@ -81,7 +82,7 @@ function App() {
                 <div className="p-2 rounded-full stat-icon-blue">
                   <Check className="h-6 w-6 text-white" />
                 </div>
-                100%
+                <AnimatedNumber value="100" suffix="%" />
               </div>
               <div className="stat-label">звонков под контролем</div>
             </div>
@@ -328,11 +329,11 @@ function App() {
               
               <div className="flex items-center gap-6">
                 <div className="text-center">
-                  <div className="stat-number green text-2xl">+28%</div>
+                  <div className="stat-number green text-2xl">+<AnimatedNumber value="28" suffix="%" /></div>
                   <span className="stat-label">к конверсии за 2 месяца</span>
                 </div>
                 <div className="text-center">
-                  <div className="stat-number orange text-2xl">8 часов</div>
+                  <div className="stat-number orange text-2xl"><AnimatedNumber value="8" suffix=" часов" /></div>
                   <span className="stat-label">экономии в день</span>
                 </div>
               </div>
