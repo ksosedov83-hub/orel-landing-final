@@ -645,14 +645,18 @@ section {
   border: none;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(234, 88, 12, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 32px;
   display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
 }
 
 .final-cta-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(234, 88, 12, 0.5);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(234, 88, 12, 0.6);
+  animation: none;
 }
 
 .final-cta-subtext {
@@ -1484,5 +1488,36 @@ button:active::after {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+
+
+/* Subtle fade-in for cards on scroll */
+.fade-in-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation for multiple cards */
+.fade-in-card:nth-child(1) {
+  transition-delay: 0s;
+}
+
+.fade-in-card:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.fade-in-card:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.fade-in-card:nth-child(4) {
+  transition-delay: 0.3s;
 }
 

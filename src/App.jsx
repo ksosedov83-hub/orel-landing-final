@@ -9,10 +9,17 @@ import kirillPortrait from './assets/kirill-portrait-new.jpg'
 import LeadForm from './LeadForm'
 import CookieBanner from './CookieBanner'
 import AnimatedNumber from './AnimatedNumber'
+import { useFadeIn } from './useFadeIn'
 
 function App() {
   const [activeTab, setActiveTab] = useState('rop')
   const [isFormOpen, setIsFormOpen] = useState(false)
+  
+  // Fade-in animations for cards
+  const [card1Ref, card1Visible] = useFadeIn()
+  const [card2Ref, card2Visible] = useFadeIn()
+  const [card3Ref, card3Visible] = useFadeIn()
+  const [card4Ref, card4Visible] = useFadeIn()
 
   return (
     <div className="min-h-screen bg-white">
@@ -230,7 +237,7 @@ function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="premium-card-large">
+            <div ref={card1Ref} className={`premium-card-large fade-in-card ${card1Visible ? 'visible' : ''}`}>
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-red-100 rounded-lg flex-shrink-0">
                   <Eye className="h-6 w-6 text-red-600" />
@@ -247,7 +254,7 @@ function App() {
               </div>
             </div>
 
-            <div className="premium-card-large">
+            <div ref={card2Ref} className={`premium-card-large fade-in-card ${card2Visible ? 'visible' : ''}`}>
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-blue-100 rounded-lg flex-shrink-0">
                   <BarChart3 className="h-6 w-6 text-blue-600" />
@@ -264,7 +271,7 @@ function App() {
               </div>
             </div>
 
-            <div className="premium-card-large">
+            <div ref={card3Ref} className={`premium-card-large fade-in-card ${card3Visible ? 'visible' : ''}`}>
               <div className="flex items-start gap-4 h-full">
                 <div className="p-3 bg-orange-100 rounded-lg flex-shrink-0">
                   <Target className="h-6 w-6 text-orange-600" />
@@ -283,7 +290,7 @@ function App() {
               </div>
             </div>
 
-            <div className="premium-card-large">
+            <div ref={card4Ref} className={`premium-card-large fade-in-card ${card4Visible ? 'visible' : ''}`}>
               <div className="flex items-start gap-4 h-full">
                 <div className="p-3 bg-green-100 rounded-lg flex-shrink-0">
                   <Zap className="h-6 w-6 text-green-600" />
