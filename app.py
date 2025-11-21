@@ -4,13 +4,17 @@ import json
 from datetime import datetime, timezone, timedelta
 import requests
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)
 
 # Telegram Bot Configuration
-TELEGRAM_BOT_TOKEN = '8456171731:AAEqKXW0QDvBLkpYjmIUVxP1Ds-aGgQs0L4'
-TELEGRAM_CHAT_ID = '436914387'
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8456171731:AAEqKXW0QDvBLkpYjmIUVxP1Ds-aGgQs0L4')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '436914387')
 
 def send_telegram_message(text):
     """Send message to Telegram"""
