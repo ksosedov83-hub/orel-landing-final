@@ -1,0 +1,20 @@
+[Unit]
+Description=Orel Landing Flask Application
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/orel-landing
+Environment="PATH=/var/www/orel-landing/venv/bin"
+ExecStart=/var/www/orel-landing/venv/bin/gunicorn -c gunicorn_config.py app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
