@@ -1,0 +1,4 @@
+PassengerEnabled On
+PassengerAppRoot /home/username/domains/yourdomain.ru/public_html
+PassengerBaseURI /
+PassengerPython /home/username/.virtualenvs/venv/bin/python
