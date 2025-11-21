@@ -1,0 +1,24 @@
+PassengerEnabled On
+PassengerAppRoot /home/path/to/your/orel-landing-final
+PassengerPython /home/path/to/your/venv/bin/python3
+
+# Настройки для статических файлов
+<FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|svg|woff|woff2|ttf|eot)$">
+    Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>
+
+# Обработка ошибок
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html
+
+# Защита от просмотра директорий
+Options -Indexes
+
+# Защита конфиденциальных файлов
+<FilesMatch "^(submissions\.json|\.env|\.git)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Кодировка по умолчанию
+AddDefaultCharset UTF-8
