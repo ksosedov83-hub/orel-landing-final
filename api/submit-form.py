@@ -1,117 +1,80 @@
-"""
-Vercel Serverless Function for ОРЁЛ Landing Form Submission
-Handles form submissions and sends data to Telegram
-"""
-
 import os
 import json
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler
 import requests
 
-# Get environment variables
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+# Получаем переменные окружения
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN' )
 TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        """Handle POST requests from the form"""
+        content_length = int(self.headers.get('Content-Length', 0))
+        body = self.rfile.read(content_length)
         
-        # Enable CORS
+        try:
+            data = json.loads(body.decode('utf-8'))
+            print(f"Received data: {data}") # Логируем входящие данные
+
+            # Извлекаем данные (поддерживаем разные варианты написания ключей)
+            name = data.get('name') or data.get('userName', 'N/A')
+            phone = data.get('phone') or data.get('userPhone', 'N/A')
+            contact_method = data.get('contact_method') or data.get('contactMethod', 'N/A')
+            consent = data.get('consent', False)
+
+            # Проверка обязательных полей
+            if not name or not phone or name == 'N/A' or phone == 'N/A':
+                self.send_error_response(400, "Имя и телефон обязательны")
+                return
+
+            # Проверка токенов
+            if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+                print("ERROR: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing in Env Variables")
+                self.send_error_response(500, "Ошибка конфигурации сервера (Env Vars)")
+                return
+
+            # Формируем сообщение
+            timestamp = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
+            message = f"📋 <b>Новая заявка ОРЁЛ</b>\n\n👤 <b>Имя:</b> {name}\n📱 <b>Тел:</b> {phone}\n💬 <b>Связь:</b> {contact_method}\n⏰ <b>Время:</b> {timestamp}"
+
+            # Отправка в Telegram
+            telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            res = requests.post(telegram_url, json={
+                'chat_id': TELEGRAM_CHAT_ID,
+                'text': message,
+                'parse_mode': 'HTML'
+            }, timeout=10 )
+
+            print(f"Telegram API Response: {res.text}") # Видим ответ от Telegram в логах!
+
+            if res.status_code == 200:
+                self.send_success_response("Заявка успешно отправлена")
+            else:
+                self.send_error_response(500, f"Ошибка Telegram API: {res.status_code}")
+
+        except Exception as e:
+            print(f"Critical Error: {str(e)}")
+            self.send_error_response(500, str(e))
+
+    def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header('Content-Type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
-        
-        try:
-            # Read request body
-            content_length = int(self.headers.get('Content-Length', 0))
-            body = self.rfile.read(content_length)
-            data = json.loads(body.decode('utf-8'))
-            
-            # Extract form data
-            name = data.get('name', 'N/A')
-            phone = data.get('phone', 'N/A')
-            contact_method = data.get('contact_method', 'N/A')
-            consent = data.get('consent', False)
-            
-            # Validate required fields
-            if not name or not phone:
-                self.wfile.write(json.dumps({
-                    'success': False,
-                    'message': 'Имя и телефон обязательны'
-                }).encode())
-                return
-            
-            # Check consent
-            if not consent:
-                self.wfile.write(json.dumps({
-                    'success': False,
-                    'message': 'Необходимо согласие на обработку данных'
-                }).encode())
-                return
-            
-            # Check Telegram credentials
-            if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-                print("ERROR: Telegram credentials not configured")
-                self.wfile.write(json.dumps({
-                    'success': False,
-                    'message': 'Ошибка конфигурации сервера'
-                }).encode())
-                return
-            
-            # Format message for Telegram
-            timestamp = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
-            message = f"""
-📋 <b>Новая заявка с сайта ОРЁЛ</b>
 
-👤 <b>Имя:</b> {name}
-📱 <b>Телефон:</b> {phone}
-💬 <b>Способ связи:</b> {contact_method}
-✅ <b>Согласие 152-ФЗ:</b> Да
-⏰ <b>Время:</b> {timestamp}
-            """.strip()
-            
-            # Send to Telegram
-            telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-            telegram_data = {
-                'chat_id': TELEGRAM_CHAT_ID,
-                'text': message,
-                'parse_mode': 'HTML'
-            }
-            
-            response = requests.post(telegram_url, json=telegram_data, timeout=10)
-            
-            if response.status_code == 200:
-                self.wfile.write(json.dumps({
-                    'success': True,
-                    'message': 'Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.'
-                }).encode())
-            else:
-                print(f"Telegram error: {response.text}")
-                self.wfile.write(json.dumps({
-                    'success': False,
-                    'message': 'Ошибка при отправке заявки'
-                }).encode())
-                
-        except json.JSONDecodeError:
-            self.wfile.write(json.dumps({
-                'success': False,
-                'message': 'Ошибка обработки данных'
-            }).encode())
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            self.wfile.write(json.dumps({
-                'success': False,
-                'message': 'Внутренняя ошибка сервера'
-            }).encode())
-    
-    def do_OPTIONS(self):
-        """Handle CORS preflight requests"""
+    def send_success_response(self, message):
         self.send_response(200)
+        self.send_common_headers()
+        self.wfile.write(json.dumps({'success': True, 'message': message}).encode())
+
+    def send_error_response(self, code, message):
+        self.send_response(code)
+        self.send_common_headers()
+        self.wfile.write(json.dumps({'success': False, 'message': message}).encode())
+
+    def send_common_headers(self):
+        self.send_header('Content-Type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
