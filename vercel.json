@@ -2,19 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/submit-form.py",
+      "src": "api/api_submit_form.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/api/submit-form",
-      "dest": "api/submit-form.py"
+      "dest": "api/api_submit_form.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
-  ],
-  "env": {
-    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
-    "TELEGRAM_CHAT_ID": "@telegram_chat_id"
-  }
+  ]
 }
-
