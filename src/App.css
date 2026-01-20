@@ -1521,3 +1521,6 @@ button:active::after {
   transition-delay: 0.3s;
 }
 
+
+/* Import ActionableInsights Component Styles */
+@import './styles/ActionableInsights.css';

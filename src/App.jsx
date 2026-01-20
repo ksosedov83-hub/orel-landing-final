@@ -10,6 +10,7 @@ import LeadForm from './LeadForm'
 import CookieBanner from './CookieBanner'
 import AnimatedNumber from './AnimatedNumber'
 import { useFadeIn } from './useFadeIn'
+import ActionableInsights from './components/ActionableInsights'
 
 function App() {
   const [activeTab, setActiveTab] = useState('rop')
@@ -311,6 +312,9 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Actionable Insights Section */}
+      <ActionableInsights />
 
       {/* Cases Section */}
       <section id="cases" className="py-20 px-4 bg-gray-50">
