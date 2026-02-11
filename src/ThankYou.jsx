@@ -24,7 +24,7 @@ function ThankYou() {
         
         <div className="thank-you-buttons">
           <a 
-            href="https://youtu.be/MnIT8hAjpd4" 
+            href="https://youtu.be/kUOVvT2DP2o" 
             target="_blank" 
             rel="noopener noreferrer"
             className="cta-button-youtube"
