@@ -356,130 +356,53 @@ function App() {
       {/* Creator Section */}
       <section id="creator" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Mobile: Text first, then photo */}
-          <div className="lg:hidden">
-            <div className="text-center mb-8">
-              <h2 className="section-title mb-2">
-                Создано практиком для практиков
-              </h2>
-              <p className="text-base text-gray-600 mb-6">
-                20 лет опыта в продажах, от менеджера до владельца бизнеса
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <img 
+                src={kirillPortrait} 
+                alt="Кирилл Соседов" 
+                className="rounded-2xl shadow-2xl w-full max-w-md mx-auto grayscale hover:grayscale-0 transition-all duration-500"
+              />
+              <div className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-xl shadow-xl hidden md:block">
+                <div className="text-3xl font-bold">20+</div>
+                <div className="text-sm">лет в продажах</div>
+              </div>
+            </div>
+            <div>
+              <h2 className="section-title mb-6 text-left">Кирилл Соседов, создатель ОРЁЛ</h2>
+              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, где теряются ваши деньги."
               </p>
-            </div>
-            
-            {/* Photo for mobile */}
-            <div className="text-center mb-8">
-              <div className="relative inline-block">
-                <img 
-                  src={kirillPortrait} 
-                  alt="Кирилл, создатель ОРЁЛ" 
-                  className="founder-photo w-56 h-56 object-cover rounded-2xl shadow-2xl"
-                  style={{
-                    border: '4px solid transparent',
-                    background: 'linear-gradient(135deg, #3b82f6, #ff6b35) padding-box, linear-gradient(135deg, #3b82f6, #ff6b35) border-box'
-                  }}
-                />
-              </div>
-            </div>
-            
-            {/* Content for mobile */}
-            <div className="text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Кирилл Соседов, создатель ОРЁЛ</h3>
-              <div className="space-y-3 text-gray-700 leading-relaxed text-sm mb-6">
-                <p>
-                  "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, где теряются ваши деньги."
-                </p>
-                <p>
-                  "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. Он говорит не на языке технологий, а на языке цифр и прибыли."
-                </p>
-              </div>
-              
-              <div className="flex justify-center gap-6 mb-6">
-                <div className="text-center">
-                  <div className="stat-number blue text-xl">20+</div>
-                  <div className="stat-label text-xs">лет в продажах</div>
-                </div>
-                <div className="text-center">
-                  <div className="stat-number blue text-xl">500+</div>
-                  <div className="stat-label text-xs">обученных менеджеров</div>
-                </div>
-              </div>
-
-              <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link inline-block">
-                Читать статью
-              </a>
-            </div>
-          </div>
-          
-          {/* Desktop: Original layout */}
-          <div className="hidden lg:block">
-            <div className="text-center mb-16">
-              <h2 className="section-title mb-4">
-                Создано практиком для практиков
-              </h2>
-              <p className="text-xl text-gray-600">
-                20 лет опыта в продажах, от менеджера до владельца бизнеса
+              <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. Он говорит не на языке технологий, а на языке цифр и прибыли."
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-center lg:text-left">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Кирилл Соседов, создатель ОРЁЛ</h3>
-                <div className="space-y-4 text-gray-700 leading-relaxed">
-                  <p>
-                    "Меня зовут Кирилл. 20 лет я строил и руководил отделами продаж в России. 
-                    Я прошел путь от менеджера по продажам до владельца бизнеса и точно знаю, 
-                    где теряются ваши деньги."
-                  </p>
-                  <p>
-                    "Поэтому я создал ОРЁЛ — инструмент, который я всегда хотел иметь сам. 
-                    Он говорит не на языке технологий, а на языке цифр и прибыли."
-                  </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="text-green-500 h-5 w-5" />
+                  <span className="font-medium">500+ обученных менеджеров</span>
                 </div>
-                
-                <div className="flex items-center gap-8 mt-8">
-                  <div className="text-center">
-                    <div className="stat-number blue text-2xl">20+</div>
-                    <div className="stat-label">лет в продажах</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="stat-number blue text-2xl">500+</div>
-                    <div className="stat-label">обученных менеджеров</div>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="text-green-500 h-5 w-5" />
+                  <span className="font-medium">100+ кейсов роста</span>
                 </div>
-
-                <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener noreferrer" className="teletype-link mt-6 inline-block">
-                  Читать статью
+              </div>
+              <div className="mt-8">
+                <a href="https://teletype.in/@aiconsult/zr7XkZa3KOu" target="_blank" rel="noopener" className="text-blue-600 font-semibold hover:underline flex items-center gap-2">
+                  Читать историю в Teletype <ArrowUp className="rotate-45 h-4 w-4" />
                 </a>
-              </div>
-              
-              <div className="text-center">
-                <div className="relative inline-block">
-                  <img 
-                    src={kirillPortrait} 
-                    alt="Кирилл, создатель ОРЁЛ" 
-                    className="founder-photo w-80 h-80 object-cover rounded-2xl shadow-2xl"
-                    style={{
-                      border: '4px solid transparent',
-                      background: 'linear-gradient(135deg, #3b82f6, #ff6b35) padding-box, linear-gradient(135deg, #3b82f6, #ff6b35) border-box'
-                    }}
-                  />
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Steps Section */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="section-title mb-4">
-              Начните увеличивать конверсию за 3 шага
-            </h2>
+            <h2 className="section-title mb-4">Начните увеличивать конверсию за 3 шага</h2>
           </div>
-
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="premium-card p-8">
@@ -492,7 +415,6 @@ function App() {
                 </p>
               </div>
             </div>
-
             <div className="text-center">
               <div className="premium-card p-8">
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -504,7 +426,6 @@ function App() {
                 </p>
               </div>
             </div>
-
             <div className="text-center">
               <div className="premium-card p-8">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -517,8 +438,6 @@ function App() {
               </div>
             </div>
           </div>
-
-
         </div>
       </section>
 
@@ -605,4 +524,3 @@ function App() {
 }
 
 export default App
-
