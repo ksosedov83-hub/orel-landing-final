@@ -61,7 +61,7 @@ function AnimatedNumber({ value, duration = 2000, suffix = '', prefix = '' }) {
   }
 
   return (
-    <span ref={elementRef} className="stat-number">
+    <span ref={elementRef}>
       {prefix}{formatNumber(count)}{suffix}
     </span>
   )

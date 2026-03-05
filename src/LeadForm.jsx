@@ -1,102 +1,172 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import './LeadForm.css'
 
 function LeadForm({ isOpen, onClose }) {
   const navigate = useNavigate()
+  // Store raw digits separately (e.g. "79161234567")
+  const [phoneDigits, setPhoneDigits] = useState('')
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
     contactMethod: 'Telegram',
     consent: false
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const phoneInputRef = useRef(null)
 
-  const formatPhoneNumber = (value) => {
-    // Remove all non-digits
-    const digits = value.replace(/\D/g, '')
-    
-    // Start with +7
-    if (digits.length === 0) return ''
-    if (digits.length <= 1) return '+7'
-    
-    // Format: +7 (XXX) XXX-XX-XX
+  // Format raw digits into display string
+  const formatPhone = useCallback((digits) => {
+    if (!digits || digits.length === 0) return ''
+
+    // Always display +7 prefix
     let formatted = '+7'
-    if (digits.length > 1) {
-      formatted += ' (' + digits.substring(1, 4)
-    }
-    if (digits.length >= 4) {
-      formatted += ') ' + digits.substring(4, 7)
-    }
-    if (digits.length >= 7) {
-      formatted += '-' + digits.substring(7, 9)
-    }
-    if (digits.length >= 9) {
-      formatted += '-' + digits.substring(9, 11)
-    }
-    
-    return formatted
-  }
 
-  const validatePhone = (phone) => {
-    const digits = phone.replace(/\D/g, '')
-    
-    // Check length
-    if (digits.length < 11) {
-      return 'Телефон должен содержать 11 цифр'
+    // digits here should NOT include the leading 7 (just the 10-digit number)
+    if (digits.length > 0) {
+      formatted += ' (' + digits.substring(0, 3)
     }
-    if (digits.length > 12) {
-      return 'Телефон не может содержать более 12 цифр'
+    if (digits.length >= 3) {
+      formatted += ') ' + digits.substring(3, 6)
     }
-    
-    // Check for repeated digits (e.g., 999999, 111111)
-    const phoneDigits = digits.substring(1) // Skip country code
-    const repeatedPattern = /(\d)\1{5,}/
-    if (repeatedPattern.test(phoneDigits)) {
-      return 'Введите корректный номер телефона'
+    if (digits.length >= 6) {
+      formatted += '-' + digits.substring(6, 8)
     }
-    
+    if (digits.length >= 8) {
+      formatted += '-' + digits.substring(8, 10)
+    }
+
+    return formatted
+  }, [])
+
+  // Get the formatted display value
+  const phoneDisplay = formatPhone(phoneDigits)
+
+  // Full phone for submission (with country code)
+  const fullPhone = phoneDigits.length > 0 ? '+7' + phoneDigits : ''
+
+  const validatePhone = () => {
+    if (phoneDigits.length < 10) {
+      return 'Телефон должен содержать 10 цифр после +7'
+    }
     return null
   }
 
-  const handlePhoneChange = (e) => {
-    const formatted = formatPhoneNumber(e.target.value)
-    setFormData({ ...formData, phone: formatted })
-    
-    // Clear error when user starts typing
-    if (errors.phone) {
-      setErrors({ ...errors, phone: null })
+  const handlePhoneKeyDown = (e) => {
+    // Handle Backspace: always remove the last digit
+    if (e.key === 'Backspace') {
+      e.preventDefault()
+      if (phoneDigits.length > 0) {
+        const newDigits = phoneDigits.slice(0, -1)
+        setPhoneDigits(newDigits)
+      }
+      if (errors.phone) setErrors({ ...errors, phone: null })
+      return
+    }
+
+    // Handle Delete key: same as Backspace for simplicity
+    if (e.key === 'Delete') {
+      e.preventDefault()
+      if (phoneDigits.length > 0) {
+        const newDigits = phoneDigits.slice(0, -1)
+        setPhoneDigits(newDigits)
+      }
+      if (errors.phone) setErrors({ ...errors, phone: null })
+      return
+    }
+
+    // Allow: Tab, Enter, Escape, arrow keys
+    if (['Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+      return
+    }
+
+    // Allow Ctrl/Cmd + A, C, V, X
+    if ((e.ctrlKey || e.metaKey) && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) {
+      return
+    }
+
+    // Only allow digits
+    if (/^\d$/.test(e.key)) {
+      e.preventDefault()
+      if (phoneDigits.length < 10) {
+        const newDigits = phoneDigits + e.key
+        setPhoneDigits(newDigits)
+        if (errors.phone) setErrors({ ...errors, phone: null })
+      }
+      return
+    }
+
+    // Block everything else
+    e.preventDefault()
+  }
+
+  // Handle paste
+  const handlePhonePaste = (e) => {
+    e.preventDefault()
+    const pasted = e.clipboardData.getData('text')
+    let digits = pasted.replace(/\D/g, '')
+
+    // Remove leading 7 or 8 (country code)
+    if (digits.startsWith('7') || digits.startsWith('8')) {
+      digits = digits.substring(1)
+    }
+
+    // Take only first 10 digits
+    digits = digits.substring(0, 10)
+
+    setPhoneDigits(digits)
+    if (errors.phone) setErrors({ ...errors, phone: null })
+  }
+
+  // Handle mobile input (some mobile keyboards use onInput/onChange instead of onKeyDown)
+  const handlePhoneInput = (e) => {
+    // Extract digits from whatever the browser gave us
+    const rawValue = e.target.value
+    let digits = rawValue.replace(/\D/g, '')
+
+    // Remove leading 7 or 8 (country code that we add ourselves)
+    if (digits.startsWith('7') || digits.startsWith('8')) {
+      digits = digits.substring(1)
+    }
+
+    // Limit to 10 digits
+    digits = digits.substring(0, 10)
+
+    // Only update if digits actually changed (avoid loops)
+    if (digits !== phoneDigits) {
+      setPhoneDigits(digits)
+      if (errors.phone) setErrors({ ...errors, phone: null })
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     // Validate
     const newErrors = {}
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Пожалуйста, введите ваше имя'
     }
-    
-    const phoneError = validatePhone(formData.phone)
+
+    const phoneError = validatePhone()
     if (phoneError) {
       newErrors.phone = phoneError
     }
-    
+
     if (!formData.consent) {
       newErrors.consent = 'Пожалуйста, согласитесь на обработку персональных данных'
     }
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
-    
+
     setIsSubmitting(true)
-    
+
     try {
       // Send to backend
       const response = await fetch('/api/submit-form', {
@@ -106,7 +176,7 @@ function LeadForm({ isOpen, onClose }) {
         },
         body: JSON.stringify({
           name: formData.name,
-          phone: formData.phone,
+          phone: fullPhone,
           contactMethod: formData.contactMethod,
           consent: formData.consent
         })
@@ -119,11 +189,11 @@ function LeadForm({ isOpen, onClose }) {
         navigate(`/thank-you?name=${encodeURIComponent(formData.name)}&method=${encodeURIComponent(formData.contactMethod)}`)
         onClose()
       } else {
-        alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
+        toast.error('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
       }
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
+      toast.error('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.')
     } finally {
       setIsSubmitting(false)
     }
@@ -137,10 +207,10 @@ function LeadForm({ isOpen, onClose }) {
         <button className="modal-close" onClick={onClose}>
           <X className="h-6 w-6" />
         </button>
-        
-        <h2 className="modal-title">Получить демо + 5 способов роста</h2>
+
+        <h2 className="modal-title">Получить демо + гайд бесплатно</h2>
         <p className="modal-subtitle">Заполните форму, и мы отправим вам материалы</p>
-        
+
         <form onSubmit={handleSubmit} className="lead-form">
           <div className="form-group">
             <label htmlFor="name" className="form-label">
@@ -159,7 +229,7 @@ function LeadForm({ isOpen, onClose }) {
             />
             {errors.name && <span className="error-message">{errors.name}</span>}
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="phone" className="form-label">
               Телефон <span className="required">*</span>
@@ -167,14 +237,19 @@ function LeadForm({ isOpen, onClose }) {
             <input
               type="tel"
               id="phone"
-              value={formData.phone}
-              onChange={handlePhoneChange}
+              ref={phoneInputRef}
+              value={phoneDisplay}
+              onKeyDown={handlePhoneKeyDown}
+              onPaste={handlePhonePaste}
+              onChange={handlePhoneInput}
               className={`form-input ${errors.phone ? 'error' : ''}`}
               placeholder="+7 (___) ___-__-__"
+              inputMode="numeric"
+              autoComplete="tel"
             />
             {errors.phone && <span className="error-message">{errors.phone}</span>}
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="contactMethod" className="form-label">
               Предпочтительный способ связи
@@ -190,7 +265,7 @@ function LeadForm({ isOpen, onClose }) {
               <option value="Звонок">Звонок</option>
             </select>
           </div>
-          
+
           <div className="form-group consent-group">
             <label className="consent-checkbox">
               <input
@@ -211,14 +286,22 @@ function LeadForm({ isOpen, onClose }) {
             </label>
             {errors.consent && <span className="error-message">{errors.consent}</span>}
           </div>
-          
-          <button 
-            type="submit" 
+
+          <button
+            type="submit"
             className="form-submit-button"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Отправка...' : 'Получить демо'}
           </button>
+
+          <div className="form-trust-signals">
+            <span>🔒 Ваши данные защищены</span>
+            <span>·</span>
+            <span>Без спама</span>
+            <span>·</span>
+            <a href="/privacy-policy.html" target="_blank" rel="noopener" className="form-trust-link">Политика конфиденциальности</a>
+          </div>
         </form>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import actionableScreenshot from '../assets/actionable_insight_screenshot.png';
 import '../styles/ActionableInsights.css';
 
-const ActionableInsights = () => {
+const ActionableInsights = ({ onOpenForm }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = React.useRef(null);
 
@@ -120,12 +120,8 @@ const ActionableInsights = () => {
                 Посмотрите видео анализа реального звонка и получите гайд "5 способов спасить сделку"
               </p>
             </div>
-            <button className="btn-premium-primary-final" onClick={() => {
-              // This will be handled by parent component
-              const event = new CustomEvent('openLeadForm');
-              window.dispatchEvent(event);
-            }}>
-              Получить видео + гайд
+            <button className="btn-premium-primary-final" onClick={onOpenForm}>
+              Получить демо + гайд бесплатно
             </button>
           </div>
         </div>
