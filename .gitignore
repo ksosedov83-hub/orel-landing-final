@@ -38,3 +38,9 @@ logs/
 # Internal
 .sisyphus/
 tmp/
+
+# Data (contains real leads — never commit)
+submissions.json
+
+# Flask static build (Vercel builds from source)
+static/

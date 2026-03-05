@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/submit-form", "destination": "/api/submit-form" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/submit-form.py": {
+      "runtime": "python3.9"
+    }
+  }
+}

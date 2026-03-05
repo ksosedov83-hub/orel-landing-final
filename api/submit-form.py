@@ -1,80 +1,78 @@
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from http.server import BaseHTTPRequestHandler
 import requests
 
-# Получаем переменные окружения
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN' )
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
+
+
+def send_telegram(name, phone, contact_method, timestamp):
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        return False
+    try:
+        message = (
+            f"🔔 <b>Новая заявка с сайта ОРЁЛ!</b>\n\n"
+            f"👤 <b>Имя:</b> {name}\n"
+            f"📱 <b>Телефон:</b> {phone}\n"
+            f"💬 <b>Способ связи:</b> {contact_method}\n"
+            f"⏰ <b>Время:</b> {timestamp}"
+        )
+        res = requests.post(
+            f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
+            json={"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "HTML"},
+            timeout=10,
+        )
+        return res.status_code == 200
+    except Exception as e:
+        print(f"Telegram error: {e}")
+        return False
+
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        content_length = int(self.headers.get('Content-Length', 0))
-        body = self.rfile.read(content_length)
-        
         try:
-            data = json.loads(body.decode('utf-8'))
-            print(f"Received data: {data}") # Логируем входящие данные
+            length = int(self.headers.get("Content-Length", 0))
+            data = json.loads(self.rfile.read(length).decode("utf-8"))
 
-            # Извлекаем данные (поддерживаем разные варианты написания ключей)
-            name = data.get('name') or data.get('userName', 'N/A')
-            phone = data.get('phone') or data.get('userPhone', 'N/A')
-            contact_method = data.get('contact_method') or data.get('contactMethod', 'N/A')
-            consent = data.get('consent', False)
+            name = data.get("name", "").strip()
+            phone = data.get("phone", "").strip()
+            contact_method = data.get("contactMethod") or data.get("contact_method", "не указан")
 
-            # Проверка обязательных полей
-            if not name or not phone or name == 'N/A' or phone == 'N/A':
-                self.send_error_response(400, "Имя и телефон обязательны")
+            if not name or not phone:
+                self._respond(400, {"success": False, "message": "Имя и телефон обязательны"})
                 return
 
-            # Проверка токенов
-            if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-                print("ERROR: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing in Env Variables")
-                self.send_error_response(500, "Ошибка конфигурации сервера (Env Vars)")
-                return
+            moscow_tz = timezone(timedelta(hours=3))
+            ts = datetime.now(moscow_tz).strftime("%d.%m.%Y %H:%M:%S")
 
-            # Формируем сообщение
-            timestamp = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
-            message = f"📋 <b>Новая заявка ОРЁЛ</b>\n\n👤 <b>Имя:</b> {name}\n📱 <b>Тел:</b> {phone}\n💬 <b>Связь:</b> {contact_method}\n⏰ <b>Время:</b> {timestamp}"
+            ok = send_telegram(name, phone, contact_method, ts)
+            if not ok:
+                print(f"Telegram notification failed (lead received: {name})")
 
-            # Отправка в Telegram
-            telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-            res = requests.post(telegram_url, json={
-                'chat_id': TELEGRAM_CHAT_ID,
-                'text': message,
-                'parse_mode': 'HTML'
-            }, timeout=10 )
-
-            print(f"Telegram API Response: {res.text}") # Видим ответ от Telegram в логах!
-
-            if res.status_code == 200:
-                self.send_success_response("Заявка успешно отправлена")
-            else:
-                self.send_error_response(500, f"Ошибка Telegram API: {res.status_code}")
+            self._respond(200, {"success": True, "message": "Заявка принята"})
 
         except Exception as e:
-            print(f"Critical Error: {str(e)}")
-            self.send_error_response(500, str(e))
+            print(f"Error: {e}")
+            self._respond(500, {"success": False, "message": str(e)})
 
     def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self._cors_headers()
         self.end_headers()
 
-    def send_success_response(self, message):
-        self.send_response(200)
-        self.send_common_headers()
-        self.wfile.write(json.dumps({'success': True, 'message': message}).encode())
-
-    def send_error_response(self, code, message):
+    def _respond(self, code, body):
         self.send_response(code)
-        self.send_common_headers()
-        self.wfile.write(json.dumps({'success': False, 'message': message}).encode())
-
-    def send_common_headers(self):
-        self.send_header('Content-Type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header("Content-Type", "application/json")
+        self._cors_headers()
         self.end_headers()
+        self.wfile.write(json.dumps(body, ensure_ascii=False).encode())
+
+    def _cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+
+    def log_message(self, format, *args):
+        pass
